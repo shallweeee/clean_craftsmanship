@@ -10,7 +10,7 @@ NOERR = | grep -v '^make:'
 all: usage
 
 usage:
-	@[ -z "$<" ] && echo "usage: make <stack|prime>" || true
+	@[ -z "$<" ] && echo "usage: make <stack|prime|bowling>" || true
 
 clean:
 	rm -rf out
@@ -31,3 +31,9 @@ prime: $(JUNIT) $(HAMCREST)
 	$(eval OUT=out/$@)
 	$(JAVAC) -d $(OUT) -cp $(JUNIT):$(HAMCREST) test/PrimeFactorsTest.java
 	$(JAVA) -jar $(JUNIT) execute -cp $(OUT):$(HAMCREST) --scan-class-path $(NOERR)
+
+bowling: $(JUNIT)
+	$(eval OUT=out/$@)
+	$(JAVAC) -d $(OUT) src/$@/Game.java
+	$(JAVAC) -d $(OUT) -cp $(OUT):$(JUNIT) test/$@/BowlingTest.java
+	$(JAVA) -jar $(JUNIT) execute -cp $(OUT) --scan-class-path $(NOERR)
