@@ -10,7 +10,7 @@ NOERR = | grep -v '^make:'
 all: usage
 
 usage:
-	@[ -z "$<" ] && echo "usage: make <stack|prime|bowling>" || true
+	@[ -z "$<" ] && echo "usage: make <stack|prime|bowling|sort>" || true
 
 clean:
 	rm -rf out
@@ -36,4 +36,9 @@ bowling: $(JUNIT)
 	$(eval OUT=out/$@)
 	$(JAVAC) -d $(OUT) src/$@/Game.java
 	$(JAVAC) -d $(OUT) -cp $(OUT):$(JUNIT) test/$@/BowlingTest.java
+	$(JAVA) -jar $(JUNIT) execute -cp $(OUT) --scan-class-path $(NOERR)
+
+sort: $(JUNIT)
+	$(eval OUT=out/$@)
+	$(JAVAC) -d $(OUT) -cp $(JUNIT) test/SortTest.java
 	$(JAVA) -jar $(JUNIT) execute -cp $(OUT) --scan-class-path $(NOERR)
