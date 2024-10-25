@@ -3,13 +3,14 @@ JAVA = $(BIN)/java
 JAVAC = $(BIN)/javac
 
 JUNIT = lib/junit-platform-console-standalone-1.11.2.jar
+HAMCREST = lib/hamcrest-3.0.jar
 
 NOERR = | grep -v '^make:'
 
 all: usage
 
 usage:
-	@[ -z "$<" ] && echo "usage: make <stack>" || true
+	@[ -z "$<" ] && echo "usage: make <stack|prime>" || true
 
 clean:
 	rm -rf out
@@ -17,8 +18,16 @@ clean:
 $(JUNIT):
 	wget -P lib https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.11.2/junit-platform-console-standalone-1.11.2.jar
 
+$(HAMCREST):
+	wget -P lib https://repo1.maven.org/maven2/org/hamcrest/hamcrest/3.0/hamcrest-3.0.jar
+
 stack: $(JUNIT)
 	$(eval OUT=out/$@)
 	$(JAVAC) -d $(OUT) src/$@/Stack.java
 	$(JAVAC) -d $(OUT) -cp $(OUT):$(JUNIT) test/$@/StackTest.java
 	$(JAVA) -jar $(JUNIT) execute -cp $(OUT) --scan-class-path $(NOERR)
+
+prime: $(JUNIT) $(HAMCREST)
+	$(eval OUT=out/$@)
+	$(JAVAC) -d $(OUT) -cp $(JUNIT):$(HAMCREST) test/PrimeFactorsTest.java
+	$(JAVA) -jar $(JUNIT) execute -cp $(OUT):$(HAMCREST) --scan-class-path $(NOERR)

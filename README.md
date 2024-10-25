@@ -27,4 +27,5 @@ $ make        # make stack과 같음
 ## 라이브라리 수동 설치
 ```bash
 $ wget -P lib https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.11.2/junit-platform-console-standalone-1.11.2.jar
+$ wget -P lib https://repo1.maven.org/maven2/org/hamcrest/hamcrest/3.0/hamcrest-3.0.jar
 ```
